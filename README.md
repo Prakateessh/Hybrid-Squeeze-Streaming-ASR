@@ -255,3 +255,17 @@ This implementation is now ready for research, development, and production deplo
 ## License
 
 MIT License - See LICENSE file for details.
+
+
+## File Descriptions
+
+- `hybrid_squeeze_asr.py` – Core model architecture; contains encoder, decoder, joint network, and disfluency head.
+- `dataset.py` – Central dataset module used by train, evaluate, and inference files.
+- `config.py` – Script to generate and manage YAML config files for training, evaluation, and streaming.
+- `prepare_data.py` – Data preparation, manifest creation for LibriSpeech, prompt and disfluency annotation.
+- `train.py` – Training pipeline with early stopping.
+- `evaluate.py` – Model evaluation and WER/CER/Disfluency metrics.
+- `transcribe.py` – Inference (offline and streaming) interface.
+- `requirements.txt` – Project dependencies.
+- `README.md` – Project documentation.
+- `setup.sh` – Quick-start setup script.
