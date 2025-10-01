@@ -1,7 +1,19 @@
 import json
 import os
 import argparse
+import soundfile as sf
 from pathlib import Path
+
+def get_audio_duration(audio_path):
+    """Return duration of an audio file using soundfile."""
+    try:
+        with sf.SoundFile(audio_path) as audio_file:
+            frames = len(audio_file)
+            sr = audio_file.samplerate
+            return frames / float(sr)
+    except Exception as e:
+        print(f"Warning: Could not read duration for {audio_path}: {e}")
+        return 0.0
 
 def create_data_manifest(audio_dir, transcript_file, output_manifest):
     manifest_data = []
@@ -12,10 +24,11 @@ def create_data_manifest(audio_dir, transcript_file, output_manifest):
     for i, transcript in enumerate(transcripts):
         audio_path = os.path.join(audio_dir, f"{i:06d}.wav")
         if os.path.exists(audio_path):
+            duration = get_audio_duration(audio_path)
             manifest_entry = {
                 "audio_filepath": audio_path,
                 "text": transcript.strip(),
-                "duration": 0.0,
+                "duration": duration,
                 "lang": "en"
             }
             manifest_data.append(manifest_entry)
@@ -70,10 +83,11 @@ def prepare_librispeech(librispeech_root, output_dir):
                         audio_path = os.path.join(chapter_path, f"{file_id}.flac")
                         
                         if os.path.exists(audio_path):
+                            duration = get_audio_duration(audio_path)
                             manifest_entry = {
                                 "audio_filepath": audio_path,
                                 "text": text.lower(),
-                                "duration": 0.0,
+                                "duration": duration,
                                 "speaker_id": speaker_dir,
                                 "lang": "en"
                             }
